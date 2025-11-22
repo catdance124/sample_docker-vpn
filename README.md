@@ -95,3 +95,7 @@ VPNを使うことで、通信経路がVPNトンネルに切り替わること�
 ## 想定ユースケース
 - VPN経由でのWebスクレイピングや自動テスト
 - Seleniumを使ったブラウザ操作のVPNトンネリング
+
+## 関連情報
+Hatena Blog記事:
+- [Docker コンテナ環境で VPN クライアントを立てて通信を経由させる方法](https://catdance124.hatenablog.jp/entry/docker-vpn-gluetun)

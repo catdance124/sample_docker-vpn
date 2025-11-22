@@ -9,6 +9,9 @@ services:
       - /dev/net/tun:/dev/net/tun
     volumes:
       - ./gluetun:/gluetun
+    # seleniumのVNCポートを公開
+    ports:
+      - 7900:7900
     environment:
       # VPNサービスプロバイダー設定
       - VPN_SERVICE_PROVIDER=custom
@@ -31,6 +34,7 @@ services:
   # seleniumサービスをgluetun経由にするための設定
   selenium:
     network_mode: "service:gluetun"
+    # network_mode: serviceを使用する場合はports,exposeを空にする必要がある
     ports: !reset []
     expose: !reset []
     depends_on:
