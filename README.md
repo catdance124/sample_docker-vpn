@@ -43,7 +43,7 @@ flowchart LR
         selenium["selenium"]
     end
 
-    app -- "localhost:4444" --> selenium
+    app -- "selenium:4444" --> selenium
     app --> Internet["Internet"]
     selenium --> Internet
 ```
@@ -69,7 +69,7 @@ flowchart LR
     subgraph Docker_Network
         app["app"]
         selenium["selenium"]
-        gluetun["gluetun(VPN)"]
+        gluetun["gluetun"]
     end
 
     app -- "localhost:4444" --> selenium
@@ -98,4 +98,4 @@ VPNを使うことで、通信経路がVPNトンネルに切り替わること�
 
 ## 関連情報
 Hatena Blog記事:
-- [Docker コンテナ環境で VPN クライアントを立てて通信を経由させる方法](https://catdance124.hatenablog.jp/entry/docker-vpn-gluetun)
+- [Docker コンテナ環境で VPN クライアントを立てて通信を経由させる方法 - wide and deep](https://catdance124.hatenablog.jp/entry/docker-vpn-gluetun)
