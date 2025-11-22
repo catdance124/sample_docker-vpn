@@ -1,0 +1,48 @@
+
+services:
+  gluetun:
+    image: qmcgaw/gluetun:latest
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - ./gluetun:/gluetun
+    environment:
+      # VPNサービスプロバイダー設定
+      - VPN_SERVICE_PROVIDER=custom
+      - VPN_TYPE=openvpn
+      # OpenVPN設定ファイルのパス
+      - OPENVPN_CUSTOM_CONFIG=/gluetun/openvpn/myvpn.ovpn
+      # 使用する暗号スイートの指定
+      - OPENVPN_CIPHERS=AES-128-CBC
+      # タイムゾーン
+      - TZ=Asia/Tokyo
+    restart: always
+    healthcheck:
+      test: ping -c 1 www.google.com || exit 1
+      interval: 20s
+      timeout: 10s
+      retries: 5
+    labels:
+      - "autoheal=true"
+
+  # seleniumサービスをgluetun経由にするための設定
+  selenium:
+    network_mode: "service:gluetun"
+    ports: !reset []
+    expose: !reset []
+    depends_on:
+      gluetun:
+        condition: service_healthy
+
+  # appサービスをgluetun経由にするための設定
+  app:
+    network_mode: "service:gluetun"
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    environment:
+      # gluetun経由の場合、localhostでseleniumにアクセス
+      SELENIUM_URL: http://localhost:4444/wd/hub
